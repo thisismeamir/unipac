@@ -13,5 +13,6 @@ data class Package(
     val metadata: Map<String, String> = emptyMap(),
     val isDownloaded: Boolean = false,
     val location: String? = null,
-    val license: String? = null
+    val license: String? = null,
+    val packageType: PackageType = PackageType.OTHER
 )

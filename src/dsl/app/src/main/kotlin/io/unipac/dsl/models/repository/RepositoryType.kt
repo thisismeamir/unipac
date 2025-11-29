@@ -1,6 +1,6 @@
 package io.unipac.dsl.models.repository
 
-enum class RepositoryGroup {
+enum class RepositoryType {
     DISTRO,
     LANGUAGE,
     FRAMEWORK,

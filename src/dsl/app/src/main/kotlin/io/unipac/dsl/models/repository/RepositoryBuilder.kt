@@ -6,19 +6,20 @@ import io.unipac.dsl.models.packages.Package
 class RepositoryBuilder(private val name: String) {
     var version: String = "1.0.0"
     var description: String = ""
-    var group: RepositoryGroup = RepositoryGroup.OTHER
+    var group: RepositoryType = RepositoryType.OTHER
     var repositoryIdentifier: String = name
 
     private val mirrors = mutableListOf<String>()
     private val metadata = mutableMapOf<String, String>()
     private var credentials: Credentials = BasicCredentials("", "")
 
+    private var firstInitialization: () -> Unit = {}
     private var beforeFetchHook: () -> Unit = {}
+
     private var afterFetchHook: () -> Unit = {}
     private var fetchPackageImpl: (String) -> List<Package> = { emptyList() }
     private var searchImpl: (String) -> List<Package> = { emptyList() }
     private var getPackageImpl: (String) -> Package? = { null }
-
     fun mirrors(vararg urls: String) {
         mirrors.addAll(urls)
     }
@@ -39,6 +40,9 @@ class RepositoryBuilder(private val name: String) {
         credentials = CredentialsBuilder().apply(block).build()
     }
 
+    fun firstInitialization(block: () -> Unit) {
+        firstInitialization = block
+    }
     fun beforeFetch(block: () -> Unit) {
         beforeFetchHook = block
     }

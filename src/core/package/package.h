@@ -5,40 +5,42 @@
 #ifndef UNIPAC_PACKAGE_H
 #define UNIPAC_PACKAGE_H
 #include <string>
+#include <utility>
 
 #include "../repository/repository.h"
 
+
 namespace unipac::core {
+struct PackageMetadata {
+    // Basic metadata about a package
+    std::string name;
+    std::string version;
+    std::string description;
+    std::string license;
+
+    // Repositories where the package is available
+    std::vector<core::RepositoryMetadata> availableInRepositories;
+    // Dependencies of the package
+    std::vector<core::PackageMetadata> dependencies;
+};
+
+
+
     class Package {
     private:
-        std::string name_;
-        std::string version_;
-        std::string description_;
-        std::vector<repository::Repository> availableInRepositories_;
-        std::string license_;
-        std::vector<core::Package> dependencies_;
-
+        core::PackageMetadata metadata_;
     public:
         // Constructor
-        Package(const std::string &name, const std::string &version, const std::string &description,
-                const std::string &repository);
+        explicit Package(core::PackageMetadata metadata) : metadata_(std::move(metadata)) {
 
+        }
         // Getters
-        std::string getName() {
-            return name_;
-        };
+        core::PackageMetadata getMetadata() const {
+            return metadata_;
+        }
 
-        std::string getVersion() {
-            return version_;
-        };
 
-        std::string getDescription() {
-            return description_;
-        };
 
-        std::vector<repository::Repository> getAvailableInRepositories() {
-            return availableInRepositories_;
-        };
     };
 } // namespace unipac::core
 

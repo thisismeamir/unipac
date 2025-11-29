@@ -5,68 +5,29 @@
 
 
 namespace unipac::core {
+    struct PackageMetadata;
     class Package;
 }
 
-namespace unipac::core::repository {
-    class PackageUniqueIdentifier;
-
+namespace unipac::core {
+    struct RepositoryMetadata {
+        // Basic metadata about a repository
+        std::string name;
+        std::string abbreviation;
+        std::string description;
+    };
     class Repository {
         // Name of the repository such as AUR, apt, pacman, etc.
     private:
-        std::string name_;
-        std::string abbreviation_;
-        std::string description_;
+        core::RepositoryMetadata metadata;
 
     public:
         // Constructor
         Repository(const std::string &name, const std::string &abbreviation, const std::string &description);
 
-        // Getters
-        std::string getName() const;
-        std::string getAbbreviation() const;
-        std::string getDescription() const;
-
-        // Setters
-        void setName(const std::string &name);
-
-        void setAbbreviation(const std::string &abbreviation);
-
-        void setDescription(const std::string &description);
-
-        // Other methods
         // Search for packages in the repository
         std::vector<core::Package> search(const std::string &query);
-        core::Package getPackage(const core::repository::PackageUniqueIdentifier &identifier);
-    };
-
-    class PackageUniqueIdentifier {
-    private:
-        std::string repositoryName_;
-        std::string packageName_;
-        std::string version_;
-
-    public:
-        // Constructor
-        PackageUniqueIdentifier(const std::string &repository_name, const std::string &package_name,
-                                const std::string &version);
-        // Getters
-        std::string getRepositoryName() {
-            return repositoryName_;
-        };
-        std::string getPackageName() {
-            return packageName_;
-        };
-        std::string getVersion() {
-            return version_;
-        };
-
-        // Setters
-        void setRepositoryName(const std::string &repository_name) {
-
-        };
-        void setPackageName(const std::string &package_name);
-        void setVersion(const std::string &version);
+        core::Package getPackage(const core::PackageMetadata &identifier);
     };
 };
 #endif //UNIPAC_REPOSITORY_H
